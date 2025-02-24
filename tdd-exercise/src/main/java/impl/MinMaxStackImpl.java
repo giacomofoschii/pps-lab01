@@ -30,13 +30,13 @@ public class MinMaxStackImpl implements MinMaxStack {
     @Override
     public int getMin() {
         if(this.stack.isEmpty()) throw new IllegalStateException("Cannot get minimum, stack is empty!");
-        return 0;
+        return this.stack.stream().min(Integer::compareTo).get();
     }
 
     @Override
     public int getMax() {
         if(this.stack.isEmpty()) throw new IllegalStateException("Cannot get max, stack is empty!");
-        return 0;
+        return this.stack.stream().max(Integer::compareTo).get();
     }
 
     @Override

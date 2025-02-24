@@ -64,7 +64,12 @@ class MinMaxStackImplTest {
 
     @Test
     void testSize() {
+        assertTrue(minMaxStack.isEmpty());
         populateStack();
+        assertAll(
+                () -> assertFalse(minMaxStack.isEmpty()),
+                () -> assertEquals(VALUES.length, minMaxStack.size())
+        );
     }
 
     @Test
