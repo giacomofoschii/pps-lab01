@@ -68,7 +68,7 @@ public class SmartDoorLockTest {
     }
 
     @Test
-    void testSetPinNotUnlocked() {
+    void testSetPinWithDoorLocked() {
         setPinAndLock();
         assertAll(
                 () -> assertThrows(IllegalStateException.class, () -> smartDoorLock.setPin(NEW_PIN)),
