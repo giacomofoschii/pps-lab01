@@ -46,8 +46,11 @@ class SimpleBankAccountTest {
     @Test
     void testWrongUserDeposit() {
         bankAccount.deposit(accountHolder.getId(), INITIAL_AMOUNT);
-        bankAccount.deposit(getWrongID(bankAccount.getHolder().getId()), DEPOSIT_AMOUNT);
-        assertEquals(INITIAL_AMOUNT, bankAccount.getBalance());
+        assertAll(
+                () -> assertThrows(IllegalArgumentException.class,
+                        () -> bankAccount.deposit(getWrongID(bankAccount.getHolder().getId()), DEPOSIT_AMOUNT)),
+                () -> assertEquals(INITIAL_AMOUNT, bankAccount.getBalance())
+        );
     }
 
     @Test

@@ -29,7 +29,7 @@ public class SimpleBankAccount implements BankAccount {
     public void deposit(final int userID, final double amount) {
         if (checkUser(userID)) {
             this.balance += amount;
-        }
+        } else throw new IllegalArgumentException("User " + userID + " is not the bank account holder");
     }
 
     @Override
