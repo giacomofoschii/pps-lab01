@@ -2,8 +2,6 @@ package tdd;
 
 import impl.MinMaxStackImpl;
 
-import java.lang.reflect.Array;
-import java.util.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +10,9 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MinMaxStackImplTest {
-    private static final int[] VALUES = {1, 2, 3, 4};
+    private static final int[] VALUES = {1, 4, 8, 2};
+    private static final int MAX_VALUE = 8;
+    private static final int MIN_VALUE = 1;
     private MinMaxStackImpl minMaxStack;
 
     @BeforeEach
@@ -31,9 +31,12 @@ class MinMaxStackImplTest {
     void testPushAndPop() {
         assertTrue(minMaxStack.isEmpty());
         populateStack();
+        assertFalse(minMaxStack.isEmpty());
         assertAll(
-                () -> assertEquals(1, minMaxStack.pop()),
-                () -> assertEquals(0, minMaxStack.pop()),
+                () -> assertEquals(VALUES[3], minMaxStack.pop()),
+                () -> assertEquals(VALUES[2], minMaxStack.pop()),
+                () -> assertEquals(VALUES[1], minMaxStack.pop()),
+                () -> assertEquals(VALUES[0], minMaxStack.pop()),
                 () -> assertTrue(minMaxStack.isEmpty())
         );
     }
@@ -66,6 +69,15 @@ class MinMaxStackImplTest {
 
     @Test
     void testMinMax() {
+        assertAll(
+                () -> assertThrows(IllegalStateException.class, () -> minMaxStack.getMax()),
+                () -> assertThrows(IllegalStateException.class, () -> minMaxStack.getMin()),
+                () -> assertTrue(minMaxStack.isEmpty())
+        );
         populateStack();
+        assertAll(
+                () -> assertEquals(MAX_VALUE, minMaxStack.getMax()),
+                () -> assertEquals(MIN_VALUE, minMaxStack.getMin())
+        );
     }
 }
