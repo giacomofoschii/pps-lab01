@@ -12,7 +12,8 @@ public class SmartDoorLockTest {
     public static final int NEW_PIN = 5678;
     public static final int WRONG_DIGITS_PIN = 123;
     public static final int PIN_DEFAULT = -1;
-    public static final int ATTEMPTS = 1;
+    public static final int FIRST_ATTEMPT = 1;
+    public static final int SECOND_ATTEMPT = 2;
     public static final int INITIAL_ATTEMPTS = 0;
     private SmartDoorLockImpl smartDoorLock;
 
@@ -72,7 +73,7 @@ public class SmartDoorLockTest {
         setPinAndLock();
         assertAll(
                 () -> assertThrows(IllegalArgumentException.class, () -> smartDoorLock.unlock(WRONG_PIN)),
-                () -> assertEquals(ATTEMPTS, smartDoorLock.getFailedAttempts())
+                () -> assertEquals(FIRST_ATTEMPT, smartDoorLock.getFailedAttempts())
         );
     }
 
@@ -81,10 +82,12 @@ public class SmartDoorLockTest {
         setPinAndLock();
         assertAll(
                 () -> assertThrows(IllegalArgumentException.class, ()-> smartDoorLock.unlock(WRONG_PIN)),
+                () -> assertEquals(FIRST_ATTEMPT, smartDoorLock.getFailedAttempts()),
                 () -> assertThrows(IllegalArgumentException.class, () -> smartDoorLock.unlock(WRONG_PIN)),
+                () -> assertEquals(SECOND_ATTEMPT, smartDoorLock.getFailedAttempts()),
                 () -> assertThrows(IllegalStateException.class, () -> smartDoorLock.unlock(WRONG_PIN)),
-                () -> assertTrue(smartDoorLock.isBlocked()),
-                () -> assertEquals(smartDoorLock.getFailedAttempts(), smartDoorLock.getMaxAttempts())
+                () -> assertEquals(smartDoorLock.getFailedAttempts(), smartDoorLock.getMaxAttempts()),
+                () -> assertTrue(smartDoorLock.isBlocked())
         );
     }
 
