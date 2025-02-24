@@ -18,6 +18,7 @@ public interface SmartDoorLock {
     /**
      * Sets a new PIN for the door lock.
      * You can set only when the system is open (not locked or blocked).
+     *
      * @param pin The new 4-digit PIN.
      */
     void setPin(int pin);

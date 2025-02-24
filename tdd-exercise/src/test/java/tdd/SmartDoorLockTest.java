@@ -15,11 +15,18 @@ public class SmartDoorLockTest {
 
     @BeforeEach
     void setUpEnviroment() {
-        smartDoorLock =new SmartDoorLockImpl(PIN);
+        smartDoorLock =new SmartDoorLockImpl();
+    }
+
+    @Test
+    void testLockedWithoutSetPin() {
+        assertThrows(IllegalStateException.class, () -> smartDoorLock.lock());
     }
 
     @Test
     void testLocked() {
+        smartDoorLock.setPin(PIN);
+        smartDoorLock.lock();
         assertTrue(smartDoorLock.isLocked());
     }
 

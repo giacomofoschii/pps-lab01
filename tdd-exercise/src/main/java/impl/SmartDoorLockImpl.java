@@ -8,12 +8,11 @@ public class SmartDoorLockImpl implements SmartDoorLock {
     private boolean isLocked;
     private boolean isBlocked;
 
-    public SmartDoorLockImpl(final int pin){
+    public SmartDoorLockImpl(){
         this.attempts = 0;
+        this.pin = -1;
         this.isBlocked = false;
         this.isLocked = false;
-        setPin(pin);
-        lock();
     }
 
     private void resetAttempts() {
@@ -45,7 +44,9 @@ public class SmartDoorLockImpl implements SmartDoorLock {
 
     @Override
     public void lock() {
-        this.isLocked = true;
+        if(this.pin != -1) {
+            this.isLocked = true;
+        } else throw new IllegalStateException("Il pin non è settato");
     }
 
     @Override
