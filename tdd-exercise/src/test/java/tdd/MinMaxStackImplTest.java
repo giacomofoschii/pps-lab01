@@ -5,12 +5,12 @@ import impl.MinMaxStackImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class MinMaxStackImplTest {
-    private static final int[] VALUES = {1, 4, 8, 2};
+    private static final List<Integer> VALUES = Arrays.asList(1, 4, 8, 2);
     private static final int MAX_VALUE = 8;
     private static final int MIN_VALUE = 1;
     private MinMaxStackImpl minMaxStack;
@@ -21,10 +21,7 @@ class MinMaxStackImplTest {
     }
 
     private void populateStack() {
-        minMaxStack.push(VALUES[0]);
-        minMaxStack.push(VALUES[1]);
-        minMaxStack.push(VALUES[2]);
-        minMaxStack.push(VALUES[3]);
+        VALUES.forEach(i -> minMaxStack.push(i));
     }
 
     @Test
@@ -33,10 +30,10 @@ class MinMaxStackImplTest {
         populateStack();
         assertFalse(minMaxStack.isEmpty());
         assertAll(
-                () -> assertEquals(VALUES[3], minMaxStack.pop()),
-                () -> assertEquals(VALUES[2], minMaxStack.pop()),
-                () -> assertEquals(VALUES[1], minMaxStack.pop()),
-                () -> assertEquals(VALUES[0], minMaxStack.pop()),
+                () -> assertEquals(VALUES.getLast(), minMaxStack.pop()),
+                () -> assertEquals(VALUES.get(2), minMaxStack.pop()),
+                () -> assertEquals(VALUES.get(1), minMaxStack.pop()),
+                () -> assertEquals(VALUES.getFirst(), minMaxStack.pop()),
                 () -> assertTrue(minMaxStack.isEmpty())
         );
     }
@@ -53,12 +50,11 @@ class MinMaxStackImplTest {
     void testPeek() {
         populateStack();
         assertAll(
-                () -> assertEquals(VALUES[3], minMaxStack.peek()),
-                () -> assertEquals(VALUES[3], minMaxStack.peek()),
-                () -> assertEquals(VALUES.length, minMaxStack.size()),
-                () -> assertEquals(VALUES[3], minMaxStack.pop()),
-                () -> assertNotEquals(VALUES[3], minMaxStack.size()),
-                () -> assertNotEquals(VALUES[3], minMaxStack.peek())
+                () -> assertEquals(VALUES.getLast(), minMaxStack.peek()),
+                () -> assertEquals(VALUES.size(), minMaxStack.size()),
+                () -> assertEquals(VALUES.getLast(), minMaxStack.pop()),
+                () -> assertNotEquals(VALUES.size(), minMaxStack.size()),
+                () -> assertNotEquals(VALUES.getLast(), minMaxStack.peek())
         );
     }
 
@@ -68,7 +64,7 @@ class MinMaxStackImplTest {
         populateStack();
         assertAll(
                 () -> assertFalse(minMaxStack.isEmpty()),
-                () -> assertEquals(VALUES.length, minMaxStack.size())
+                () -> assertEquals(VALUES.size(), minMaxStack.size())
         );
     }
 
