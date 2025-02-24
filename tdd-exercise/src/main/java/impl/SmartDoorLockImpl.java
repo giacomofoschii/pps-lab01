@@ -3,16 +3,18 @@ package impl;
 import tdd.SmartDoorLock;
 
 public class SmartDoorLockImpl implements SmartDoorLock {
+    private static final int MAX_ATTEMPTS = 3;
+
     private int pin;
     private int attempts;
-    private boolean isLocked;
-    private boolean isBlocked;
+    private boolean locked;
+    private boolean blocked;
 
     public SmartDoorLockImpl(){
-        this.attempts = 0;
+        resetAttempts();
         this.pin = -1;
-        this.isBlocked = false;
-        this.isLocked = false;
+        this.blocked = false;
+        this.locked = false;
     }
 
     private void resetAttempts() {
@@ -21,7 +23,7 @@ public class SmartDoorLockImpl implements SmartDoorLock {
 
     @Override
     public void setPin(int pin) {
-        if(!isLocked) {
+        if(!locked) {
             this.pin = pin;
         } else throw new IllegalStateException("Cannot set new pin, the door is locked");
     }
@@ -34,34 +36,39 @@ public class SmartDoorLockImpl implements SmartDoorLock {
     @Override
     public void unlock(int pin) {
         if(pin == this.pin) {
-            this.isLocked = false;
+            this.locked = false;
             resetAttempts();
         } else {
             this.attempts++;
-            throw new IllegalArgumentException("Pin " + pin + " is not corrected");
+            if(this.attempts < getMaxAttempts()) {
+                throw new IllegalArgumentException("Pin " + pin + " is not corrected");
+            } else {
+                this.blocked = true;
+                throw new IllegalStateException("You reached te maximum number of attempts, the door is now blocked");
+            }
         }
     }
 
     @Override
     public void lock() {
         if(this.pin != -1) {
-            this.isLocked = true;
-        } else throw new IllegalStateException("Il pin non è settato");
+            this.locked = true;
+        } else throw new IllegalStateException("Pin is not setted");
     }
 
     @Override
     public boolean isLocked() {
-        return this.isLocked;
+        return this.locked;
     }
 
     @Override
     public boolean isBlocked() {
-        return this.isBlocked;
+        return this.blocked;
     }
 
     @Override
     public int getMaxAttempts() {
-        return 0;
+        return MAX_ATTEMPTS;
     }
 
     @Override
@@ -71,6 +78,9 @@ public class SmartDoorLockImpl implements SmartDoorLock {
 
     @Override
     public void reset() {
-
+        resetAttempts();
+        this.pin = -1;
+        this.locked = false;
+        this.blocked = false;
     }
 }

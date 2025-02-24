@@ -11,11 +11,18 @@ public class SmartDoorLockTest {
     public static final int PIN = 1234;
     public static final int NEW_PIN = 5678;
     public static final int ATTEMPTS = 1;
+    public static final int INITIAL_ATTEMPTS = 0;
+    public static final int PIN_DEFAULT = -1;
     private SmartDoorLockImpl smartDoorLock;
 
     @BeforeEach
     void setUpEnviroment() {
-        smartDoorLock =new SmartDoorLockImpl();
+        smartDoorLock = new SmartDoorLockImpl();
+    }
+
+    private void setPinAndLock() {
+        smartDoorLock.setPin(PIN);
+        smartDoorLock.lock();
     }
 
     @Test
@@ -25,29 +32,62 @@ public class SmartDoorLockTest {
 
     @Test
     void testLocked() {
-        smartDoorLock.setPin(PIN);
-        smartDoorLock.lock();
+        setPinAndLock();
         assertTrue(smartDoorLock.isLocked());
     }
 
     @Test
     void testUnlocked() {
+        setPinAndLock();
         smartDoorLock.unlock(PIN);
         assertFalse(smartDoorLock.isLocked());
     }
 
     @Test
-    void setPin() {
+    void testSetPin() {
+        setPinAndLock();
         smartDoorLock.unlock(PIN);
         smartDoorLock.setPin(NEW_PIN);
         assertEquals(NEW_PIN, smartDoorLock.getPin());
     }
 
     @Test
+    void testWrongSetPin() {
+        setPinAndLock();
+        assertAll(
+                () -> assertThrows(IllegalStateException.class, () -> smartDoorLock.setPin(NEW_PIN)),
+                () -> assertNotEquals(NEW_PIN, smartDoorLock.getPin())
+        );
+    }
+
+    @Test
     void testWrongUnlocked() {
+        setPinAndLock();
         assertAll(
                 () -> assertThrows(IllegalArgumentException.class, () -> smartDoorLock.unlock(WRONG_PIN)),
                 () -> assertEquals(ATTEMPTS, smartDoorLock.getFailedAttempts())
         );
+    }
+
+    @Test
+    void testBlockedDoor() {
+        setPinAndLock();
+        assertAll(
+                () -> assertThrows(IllegalArgumentException.class, ()-> smartDoorLock.unlock(WRONG_PIN)),
+                () -> assertThrows(IllegalArgumentException.class, () -> smartDoorLock.unlock(WRONG_PIN)),
+                () -> assertThrows(IllegalStateException.class, () -> smartDoorLock.unlock(WRONG_PIN)),
+                () -> assertTrue(smartDoorLock.isBlocked()),
+                () -> assertEquals(smartDoorLock.getFailedAttempts(), smartDoorLock.getMaxAttempts())
+        );
+    }
+
+    @Test
+    void testReset() {
+        testBlockedDoor();
+        smartDoorLock.reset();
+        assertFalse(smartDoorLock.isBlocked());
+        assertFalse(smartDoorLock.isLocked());
+        assertEquals(PIN_DEFAULT, smartDoorLock.getPin());
+        assertEquals(INITIAL_ATTEMPTS, smartDoorLock.getFailedAttempts());
     }
 }

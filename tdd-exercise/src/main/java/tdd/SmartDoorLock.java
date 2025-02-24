@@ -64,7 +64,6 @@ public interface SmartDoorLock {
     /**
      * Gets the number of failed unlock attempts.
      *
-     *
      * @return The number of failed attempts.
      */
     int getFailedAttempts();
@@ -73,6 +72,7 @@ public interface SmartDoorLock {
      * Resets the door lock.
      * This completely resets the lock, including the PIN, failed attempts, and blocked state.
      * It sets the lock to the initial state (open).
+     *
      */
     void reset();
 }
