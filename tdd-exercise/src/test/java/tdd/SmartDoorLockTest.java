@@ -10,9 +10,10 @@ public class SmartDoorLockTest {
     public static final int WRONG_PIN = 1111;
     public static final int PIN = 1234;
     public static final int NEW_PIN = 5678;
+    public static final int WRONG_DIGITS_PIN = 123;
+    public static final int PIN_DEFAULT = -1;
     public static final int ATTEMPTS = 1;
     public static final int INITIAL_ATTEMPTS = 0;
-    public static final int PIN_DEFAULT = -1;
     private SmartDoorLockImpl smartDoorLock;
 
     @BeforeEach
@@ -28,6 +29,12 @@ public class SmartDoorLockTest {
     @Test
     void testLockedWithoutSetPin() {
         assertThrows(IllegalStateException.class, () -> smartDoorLock.lock());
+    }
+
+    @Test
+    void testWrongDigitsPin() {
+        assertEquals(PIN_DEFAULT, smartDoorLock.getPin());
+        assertThrows(IllegalArgumentException.class, () -> smartDoorLock.setPin(WRONG_DIGITS_PIN));
     }
 
     @Test

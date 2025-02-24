@@ -23,6 +23,7 @@ public class SmartDoorLockImpl implements SmartDoorLock {
 
     @Override
     public void setPin(int pin) {
+        if(String.valueOf(pin).length() != 4) throw new IllegalArgumentException("Pin must be exactly 4 digits");
         if(!locked) {
             this.pin = pin;
         } else throw new IllegalStateException("Cannot set new pin, the door is locked");
