@@ -8,6 +8,9 @@
 # Log file
 *.log
 
+# Project file
+*.xml
+
 # BlueJ files
 *.ctxt
 
