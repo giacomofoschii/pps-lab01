@@ -63,6 +63,7 @@ public interface CircularQueue {
      * Retrieve the first (older) element in the queue, without remove it
      *
      * @return the first element in the queue
+     * @throws IllegalStateException if the queue is empty.
      */
     int getFirst();
 }

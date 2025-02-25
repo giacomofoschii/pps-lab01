@@ -2,8 +2,7 @@ package impl;
 
 import tdd.CircularQueue;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class CircularQueueImpl implements CircularQueue {
     private static final int MAX_SIZE = 3;
@@ -50,6 +49,7 @@ public class CircularQueueImpl implements CircularQueue {
 
     @Override
     public int getFirst() {
+        if(isEmpty()) throw new IllegalStateException("The queue is empty");
         return this.queue.element();
     }
 }
