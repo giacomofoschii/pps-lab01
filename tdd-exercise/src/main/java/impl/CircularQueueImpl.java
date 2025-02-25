@@ -3,7 +3,6 @@ package impl;
 import tdd.CircularQueue;
 
 import java.util.LinkedList;
-import java.util.PriorityQueue;
 import java.util.Queue;
 
 public class CircularQueueImpl implements CircularQueue {
@@ -16,24 +15,22 @@ public class CircularQueueImpl implements CircularQueue {
 
     @Override
     public void push(int value) {
-        if(getSize() < getMaxSize() || isEmpty()){
-            this.queue.add(value);
-        } else {
-            this.queue.stream().findFirst().ifPresent(this.queue::remove);
-            this.queue.add(value);
+        if(getSize() >= getMaxSize()){
+            this.queue.remove();
         }
+        this.queue.add(value);
     }
 
     @Override
     public int pop() {
         if(isEmpty()) throw new IllegalStateException("The Queue is empty");
-        return this.queue.remove();
+        return ((LinkedList<Integer>) this.queue).removeLast();
     }
 
     @Override
     public int peek() {
         if(isEmpty()) throw new IllegalStateException("The Queue is empty");
-        return this.queue.element();
+        return ((LinkedList<Integer>) this.queue).getLast();
     }
 
     @Override
@@ -49,5 +46,10 @@ public class CircularQueueImpl implements CircularQueue {
     @Override
     public int getSize() {
         return this.queue.size();
+    }
+
+    @Override
+    public int getFirst() {
+        return this.queue.element();
     }
 }

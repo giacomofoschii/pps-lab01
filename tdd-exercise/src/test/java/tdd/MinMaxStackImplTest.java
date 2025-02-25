@@ -20,30 +20,30 @@ class MinMaxStackImplTest {
     }
 
     private void populateStack() {
-        VALUES.forEach(i -> minMaxStack.push(i));
+        VALUES.forEach(i -> this.minMaxStack.push(i));
     }
 
     @Test
     void testPush() {
         populateStack();
-        assertFalse(minMaxStack.isEmpty());
+        assertFalse(this.minMaxStack.isEmpty());
     }
 
     @Test
     void testPop() {
         populateStack();
         assertAll(
-                () -> assertEquals(VALUES.getLast(), minMaxStack.pop()),
-                () -> assertEquals(VALUES.get(2), minMaxStack.pop()),
-                () -> assertEquals(SIZE_AFTER_TWO_POP, minMaxStack.size())
+                () -> assertEquals(VALUES.getLast(), this.minMaxStack.pop()),
+                () -> assertEquals(VALUES.get(2), this.minMaxStack.pop()),
+                () -> assertEquals(SIZE_AFTER_TWO_POP, this.minMaxStack.size())
         );
     }
 
     @Test
     void testEmptyPop() {
         assertAll(
-                () -> assertTrue(minMaxStack.isEmpty()),
-                () -> assertThrows(IllegalStateException.class, () -> minMaxStack.pop())
+                () -> assertTrue(this.minMaxStack.isEmpty()),
+                () -> assertThrows(IllegalStateException.class, () -> this.minMaxStack.pop())
         );
     }
 
@@ -51,27 +51,27 @@ class MinMaxStackImplTest {
     void testPeek() {
         populateStack();
         assertAll(
-                () -> assertEquals(VALUES.getLast(), minMaxStack.peek()),
-                () -> assertEquals(VALUES.size(), minMaxStack.size())
+                () -> assertEquals(VALUES.getLast(), this.minMaxStack.peek()),
+                () -> assertEquals(VALUES.size(), this.minMaxStack.size())
         );
     }
 
     @Test
     void testSize() {
-        assertTrue(minMaxStack.isEmpty());
+        assertTrue(this.minMaxStack.isEmpty());
         populateStack();
         assertAll(
-                () -> assertFalse(minMaxStack.isEmpty()),
-                () -> assertEquals(VALUES.size(), minMaxStack.size())
+                () -> assertFalse(this.minMaxStack.isEmpty()),
+                () -> assertEquals(VALUES.size(), this.minMaxStack.size())
         );
     }
 
     @Test
     void testEmptyMinMax() {
         assertAll(
-                () -> assertThrows(IllegalStateException.class, () -> minMaxStack.getMax()),
-                () -> assertThrows(IllegalStateException.class, () -> minMaxStack.getMin()),
-                () -> assertTrue(minMaxStack.isEmpty())
+                () -> assertThrows(IllegalStateException.class, () -> this.minMaxStack.getMax()),
+                () -> assertThrows(IllegalStateException.class, () -> this.minMaxStack.getMin()),
+                () -> assertTrue(this.minMaxStack.isEmpty())
         );
     }
 
@@ -79,8 +79,8 @@ class MinMaxStackImplTest {
     void testMinMax() {
         populateStack();
         assertAll(
-                () -> assertEquals(MAX_VALUE, minMaxStack.getMax()),
-                () -> assertEquals(MIN_VALUE, minMaxStack.getMin())
+                () -> assertEquals(MAX_VALUE, this.minMaxStack.getMax()),
+                () -> assertEquals(MIN_VALUE, this.minMaxStack.getMin())
         );
     }
 }

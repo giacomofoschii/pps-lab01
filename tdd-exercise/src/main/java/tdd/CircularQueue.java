@@ -58,4 +58,11 @@ public interface CircularQueue {
      * @return the current size of the queue
      */
     int getSize();
+
+    /**
+     * Retrieve the first (older) element in the queue, without remove it
+     *
+     * @return the first element in the queue
+     */
+    int getFirst();
 }
