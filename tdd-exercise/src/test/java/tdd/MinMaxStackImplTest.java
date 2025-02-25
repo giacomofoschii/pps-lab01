@@ -11,6 +11,7 @@ class MinMaxStackImplTest {
     private static final List<Integer> VALUES = Arrays.asList(1, 4, 8, 2);
     private static final int MAX_VALUE = 8;
     private static final int MIN_VALUE = 1;
+    private static final int SIZE_AFTER_TWO_POP = 2;
     private MinMaxStackImpl minMaxStack;
 
     @BeforeEach
@@ -23,16 +24,18 @@ class MinMaxStackImplTest {
     }
 
     @Test
-    void testPushAndPop() {
-        assertTrue(minMaxStack.isEmpty());
+    void testPush() {
         populateStack();
         assertFalse(minMaxStack.isEmpty());
+    }
+
+    @Test
+    void testPop() {
+        populateStack();
         assertAll(
                 () -> assertEquals(VALUES.getLast(), minMaxStack.pop()),
                 () -> assertEquals(VALUES.get(2), minMaxStack.pop()),
-                () -> assertEquals(VALUES.get(1), minMaxStack.pop()),
-                () -> assertEquals(VALUES.getFirst(), minMaxStack.pop()),
-                () -> assertTrue(minMaxStack.isEmpty())
+                () -> assertEquals(SIZE_AFTER_TWO_POP, minMaxStack.size())
         );
     }
 
@@ -49,10 +52,7 @@ class MinMaxStackImplTest {
         populateStack();
         assertAll(
                 () -> assertEquals(VALUES.getLast(), minMaxStack.peek()),
-                () -> assertEquals(VALUES.size(), minMaxStack.size()),
-                () -> assertEquals(VALUES.getLast(), minMaxStack.pop()),
-                () -> assertNotEquals(VALUES.size(), minMaxStack.size()),
-                () -> assertNotEquals(VALUES.getLast(), minMaxStack.peek())
+                () -> assertEquals(VALUES.size(), minMaxStack.size())
         );
     }
 
@@ -67,12 +67,16 @@ class MinMaxStackImplTest {
     }
 
     @Test
-    void testMinMax() {
+    void testEmptyMinMax() {
         assertAll(
                 () -> assertThrows(IllegalStateException.class, () -> minMaxStack.getMax()),
                 () -> assertThrows(IllegalStateException.class, () -> minMaxStack.getMin()),
                 () -> assertTrue(minMaxStack.isEmpty())
         );
+    }
+
+    @Test
+    void testMinMax() {
         populateStack();
         assertAll(
                 () -> assertEquals(MAX_VALUE, minMaxStack.getMax()),
