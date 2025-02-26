@@ -28,7 +28,7 @@ public class SmartDoorLockTest {
     }
 
     @Test
-    void testSetPin() {
+    void testSetNewPin() {
         setPinAndLock();
         smartDoorLock.unlock(PIN);
         smartDoorLock.setPin(NEW_PIN);
@@ -95,9 +95,11 @@ public class SmartDoorLockTest {
     void testReset() {
         testBlockedDoor();
         smartDoorLock.reset();
-        assertFalse(smartDoorLock.isBlocked());
-        assertFalse(smartDoorLock.isLocked());
-        assertEquals(PIN_DEFAULT, smartDoorLock.getPin());
-        assertEquals(INITIAL_ATTEMPTS, smartDoorLock.getFailedAttempts());
+        assertAll(
+                () -> assertFalse(smartDoorLock.isBlocked()),
+                () -> assertFalse(smartDoorLock.isLocked()),
+                () -> assertEquals(PIN_DEFAULT, smartDoorLock.getPin()),
+                () -> assertEquals(INITIAL_ATTEMPTS, smartDoorLock.getFailedAttempts())
+        );
     }
 }
